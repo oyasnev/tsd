@@ -7,7 +7,6 @@ import edu.princeton.cs.introcs.Out;
  * Date: 11.03.14
  */
 public class RepeatLine {
-    public long id;
     public String querySeq;
     public long posQBegin;
     public long posQEnd;
@@ -19,7 +18,6 @@ public class RepeatLine {
     }
 
     public RepeatLine(RepeatMaskerLine rml) {
-        id = rml.id;
         querySeq = rml.querySeq;
         posQBegin = rml.posQBegin;
         posQEnd = rml.posQEnd;
@@ -28,7 +26,7 @@ public class RepeatLine {
     }
 
     public void write(Out out) {
-        out.printf("%10d  %s  %10d  %10d  %20s  %20s\n",
-                id, querySeq, posQBegin, posQEnd, repeatName, repeatClass);
+        out.printf("%s  %10d  %10d  %50s  %50s\n",
+                querySeq, posQBegin, posQEnd, repeatName, repeatClass);
     }
 }

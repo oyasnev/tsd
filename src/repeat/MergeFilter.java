@@ -17,18 +17,24 @@ public class MergeFilter {
         }
 
         // read repeats
-        ArrayList<RepeatMaskerLine> rmlArr = new ArrayList<RepeatMaskerLine>();
+        ArrayList<RepeatLine> rlArr = new ArrayList<RepeatLine>();
+        // read first repeat
+        RepeatLine rl = new RepeatLine(RepeatMaskerLine.read(input));
+        // continue
         RepeatMaskerLine rml = RepeatMaskerLine.read(input);
         while (rml != null) {
-            rmlArr.add(rml);
+            if (rml.posQBegin - rl.posQEnd <= merge_threshold) {
+                // merge repeats
+                rl.posQEnd = Math.max(rl.posQEnd, rml.posQEnd);
+                rl.repeatName += '|' + rml.repeatName;
+                rl.repeatClass += '|' + rml.repeatClass;
+            } else {
+                rlArr.add(rl);
+                rl = new RepeatLine(rml);
+            }
             rml = RepeatMaskerLine.read(input);
         }
-
-        // convert
-        ArrayList<RepeatLine> rlArr = new ArrayList<RepeatLine>(rmlArr.size());
-        for (RepeatMaskerLine repeat : rmlArr) {
-            rlArr.add(new RepeatLine(repeat));
-        }
+        rlArr.add(rl);
 
         // write to output
         for (RepeatLine repeat : rlArr) {

@@ -1,5 +1,7 @@
 package repeat;
 
+import edu.princeton.cs.introcs.Out;
+
 /**
  * Author: Oleg Yasnev (oyasnev@gmail.com)
  * Date: 11.03.14
@@ -23,5 +25,9 @@ public class RepeatLine {
         posQEnd = rml.posQEnd;
         repeatName = rml.repeatName;
         repeatClass = rml.repeatClass;
+    }
+
+    public void write(Out out) {
+        out.printf("%10d  %s  %10d  %10d  %20s  %20s");
     }
 }

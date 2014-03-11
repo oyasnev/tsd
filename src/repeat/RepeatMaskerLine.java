@@ -29,33 +29,37 @@ public class RepeatMaskerLine {
 
     }
 
-    public boolean read(In in) {
-        return in.hasNextLine() && parse(in.readLine());
+    public static RepeatMaskerLine read(In in) {
+        if (in.hasNextLine()) {
+            return parse(in.readLine());
+        }
+        return null;
     }
 
-    public boolean parse(String line) {
+    public static RepeatMaskerLine parse(String line) {
         try {
+            RepeatMaskerLine rml = new RepeatMaskerLine();
             line = line.trim();
             String[] fields = line.split("\\s+");
-            swScore = Long.parseLong(fields[0]);
-            percDiv = Double.parseDouble(fields[1]);
-            percDel = Double.parseDouble(fields[2]);
-            percIns = Double.parseDouble(fields[3]);
-            querySeq = fields[4];
-            posQBegin = Long.parseLong(fields[5]);
-            posQEnd = Long.parseLong(fields[6]);
-            posQLeft = fields[7];
-            complement = fields[8];
-            repeatName = fields[9];
-            repeatClass = fields[10];
-            posRBegin = fields[11];
-            posREnd = fields[12];
-            posRLeft = fields[13];
-            id = Long.parseLong(fields[14]);
-            asteriks = (fields.length == 16 && fields[15].equals("*"));
+            rml.swScore = Long.parseLong(fields[0]);
+            rml.percDiv = Double.parseDouble(fields[1]);
+            rml.percDel = Double.parseDouble(fields[2]);
+            rml.percIns = Double.parseDouble(fields[3]);
+            rml.querySeq = fields[4];
+            rml.posQBegin = Long.parseLong(fields[5]);
+            rml.posQEnd = Long.parseLong(fields[6]);
+            rml.posQLeft = fields[7];
+            rml.complement = fields[8];
+            rml.repeatName = fields[9];
+            rml.repeatClass = fields[10];
+            rml.posRBegin = fields[11];
+            rml.posREnd = fields[12];
+            rml.posRLeft = fields[13];
+            rml.id = Long.parseLong(fields[14]);
+            rml.asteriks = (fields.length == 16 && fields[15].equals("*"));
+            return rml;
         } catch (Exception e) {
-            return false;
+            return null;
         }
-        return true;
     }
 }

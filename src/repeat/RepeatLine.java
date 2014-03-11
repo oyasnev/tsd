@@ -28,6 +28,7 @@ public class RepeatLine {
     }
 
     public void write(Out out) {
-        out.printf("%10d  %s  %10d  %10d  %20s  %20s");
+        out.printf("%10d  %s  %10d  %10d  %20s  %20s\n",
+                id, querySeq, posQBegin, posQEnd, repeatName, repeatClass);
     }
 }

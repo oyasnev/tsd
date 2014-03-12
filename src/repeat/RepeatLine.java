@@ -8,8 +8,8 @@ import edu.princeton.cs.introcs.Out;
  */
 public class RepeatLine {
     public String querySeq;
-    public long posQBegin;
-    public long posQEnd;
+    public int posQBegin;
+    public int posQEnd;
     public String repeatName;
     public String repeatClass;
 

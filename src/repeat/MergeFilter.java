@@ -10,6 +10,8 @@ import java.util.ArrayList;
  * Date: 11.03.14
  */
 public class MergeFilter {
+    public ArrayList<RepeatLine> rlArr;
+
     public MergeFilter(In input, Out output, int merge_threshold) {
         // skip header lines
         for (int i = 0; i < 3; i++) {
@@ -17,7 +19,7 @@ public class MergeFilter {
         }
 
         // read repeats
-        ArrayList<RepeatLine> rlArr = new ArrayList<RepeatLine>();
+        rlArr = new ArrayList<RepeatLine>();
         // read first repeat
         RepeatLine rl = new RepeatLine(RepeatMaskerLine.read(input));
         // continue
@@ -40,6 +42,5 @@ public class MergeFilter {
         for (RepeatLine repeat : rlArr) {
             repeat.write(output);
         }
-
     }
 }

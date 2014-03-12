@@ -36,6 +36,7 @@ public class Main {
         LocalAlignment alignment = new LocalAlignment(strFirst, strSecond);
         int[][] matrix = alignment.getMatrix();
         AlignStartPos[][] startPosMatrix = alignment.getAlignStartPosMatrix();
+        int maxScore = alignment.getMaxScore();
 
         int m = strFirst.length();
         int n = strSecond.length();
@@ -43,18 +44,15 @@ public class Main {
         for (int i = 1; i < m; i++) {
             for (int j = 1; j < n; j++) {
                 int score = matrix[i][j];
-                // check if local maximum
-                if (score >= matrix[i-1][j-1] && score >= matrix[i-1][ j ] &&
-                    score >= matrix[ i ][j-1] && score >= matrix[ i ][j+1] &&
-                    score >= matrix[i+1][ j ] && score >= matrix[i+1][j+1]) {
-                    // local maximum
-                    AlignStartPos start = startPosMatrix[i][j];
-                    if (checkTSD(i, j, start, score)) {
-                        StdOut.println(score);
-                        StdOut.println(strFirst.substring(start.i, i));
-                        StdOut.println(strSecond.substring(start.j, j));
-                        StdOut.println();
-                    }
+                if (score != maxScore) {
+                    continue;
+                }
+                AlignStartPos start = startPosMatrix[i][j];
+                if (checkTSD(i, j, start, score)) {
+                    StdOut.println(score);
+                    StdOut.println(strFirst.substring(start.i, i));
+                    StdOut.println(strSecond.substring(start.j, j));
+                    StdOut.println();
                 }
             }
         }
@@ -66,7 +64,7 @@ public class Main {
         if (lenFirst < 4 || lenSecond < 4) {
             return false;
         }
-        return (lenFirst - score) / 2 < 3 || (lenSecond - score) / 2 < 3;
+        return (lenFirst - score) / 2 < 4 && (lenSecond - score) / 2 < 4;
     }
 
 

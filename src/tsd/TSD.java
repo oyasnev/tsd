@@ -13,6 +13,8 @@ public class TSD {
     public String alignedEnd;
     public int score;
     public int dist;
+    public String repeatName;
+    public String repeatClass;
 
     public TSD(String start, String end, int score, int dist) {
         this.start = start;

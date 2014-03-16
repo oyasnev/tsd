@@ -13,7 +13,10 @@ public class TSDFile {
         for (TSD tsd : tsdList) {
             out.println(tsd.alignedStart);
             out.println(tsd.alignedEnd);
-            out.printf("SW score: %d, edit distance: %d\n", tsd.score, tsd.dist);
+            out.printf("Repeat name: %s \n", tsd.repeatName);
+            out.printf("Repeat class: %s \n", tsd.repeatClass);
+            out.printf("First TSD pos: %d, second TSD pos: %d\n", tsd.startPos + 1, tsd.endPos + 1);
+            out.printf("length: %d, SW score: %d, edit distance: %d\n", tsd.alignedStart.length(), tsd.score, tsd.dist);
             out.println("\n");
         }
     }

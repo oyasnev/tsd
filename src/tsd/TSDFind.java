@@ -36,16 +36,20 @@ public class TSDFind {
         tsdArr = new ArrayList<TSD>();
         for (RepeatLine repeat : rlArr) {
             int dist = 15;
-            int start = Math.max(0, repeat.posQBegin - dist - 1);
-            int end = Math.min(seq.length(), repeat.posQBegin + dist - 1);
-            String strStart = seq.substring(start, end);
-            start = Math.max(0, repeat.posQEnd - dist - 1);
-            end = Math.min(seq.length(), repeat.posQEnd + dist);
-            String strEnd = seq.substring(start, end);
+            int startFirst = Math.max(0, repeat.posQBegin - dist - 1);
+            int endFirst = Math.min(seq.length(), repeat.posQBegin + dist - 1);
+            String strStart = seq.substring(startFirst, endFirst);
+            int startSecond = Math.max(0, repeat.posQEnd - dist - 1);
+            int endSecond = Math.min(seq.length(), repeat.posQEnd + dist);
+            String strEnd = seq.substring(startSecond, endSecond);
 
             // find tsd
             TSD tsd = findTSD(strStart, strEnd);
             if (tsd != null) {
+                tsd.repeatName = repeat.repeatName;
+                tsd.repeatClass = repeat.repeatClass;
+                tsd.startPos += startFirst;
+                tsd.endPos += startSecond;
                 tsdArr.add(tsd);
             }
         }
@@ -69,6 +73,8 @@ public class TSDFind {
                 if (checkTSD(i, j, start, dist)) {
                     String[] alignedStrs = alignment.backtracking(i, j);
                     TSD tsd = new TSD(strFirst.substring(start.i, i), strSecond.substring(start.j, j), score, dist);
+                    tsd.startPos = start.i;
+                    tsd.endPos = start.j;
                     tsd.alignedStart = alignedStrs[0];
                     tsd.alignedEnd = alignedStrs[1];
                     if (bestTsd == null && tsd.getHeuristicScore() > 0

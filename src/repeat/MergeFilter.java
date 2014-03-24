@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class MergeFilter {
     public ArrayList<RepeatLine> rlArr;
 
-    public MergeFilter(In input, Out output, int merge_threshold) {
+    public MergeFilter(In input, Out output, boolean merge, int merge_threshold) {
         // skip header lines
         for (int i = 0; i < 3; i++) {
             input.readLine();
@@ -20,23 +20,32 @@ public class MergeFilter {
 
         // read repeats
         rlArr = new ArrayList<RepeatLine>();
-        // read first repeat
-        RepeatLine rl = new RepeatLine(RepeatMaskerLine.read(input));
-        // continue
-        RepeatMaskerLine rml = RepeatMaskerLine.read(input);
-        while (rml != null) {
-            if (rml.posQBegin - rl.posQEnd <= merge_threshold) {
-                // merge repeats
-                rl.posQEnd = Math.max(rl.posQEnd, rml.posQEnd);
-                rl.repeatName += '|' + rml.repeatName;
-                rl.repeatClass += '|' + rml.repeatClass;
-            } else {
-                rlArr.add(rl);
-                rl = new RepeatLine(rml);
+        if (merge) {
+            // read first repeat
+            RepeatLine rl = new RepeatLine(RepeatMaskerLine.read(input));
+            // continue
+            RepeatMaskerLine rml = RepeatMaskerLine.read(input);
+            while (rml != null) {
+                if (rml.posQBegin - rl.posQEnd <= merge_threshold) {
+                    // merge repeats
+                    rl.posQEnd = Math.max(rl.posQEnd, rml.posQEnd);
+                    rl.repeatName += '|' + rml.repeatName;
+                    rl.repeatClass += '|' + rml.repeatClass;
+                } else {
+                    rlArr.add(rl);
+                    rl = new RepeatLine(rml);
+               }
+                rml = RepeatMaskerLine.read(input);
             }
-            rml = RepeatMaskerLine.read(input);
+            rlArr.add(rl);
+        } else {
+            // not merge
+            RepeatMaskerLine rml = RepeatMaskerLine.read(input);
+            while (rml != null) {
+                rlArr.add(new RepeatLine(rml));
+                rml = RepeatMaskerLine.read(input);
+            }
         }
-        rlArr.add(rl);
 
         // write to output
         for (RepeatLine repeat : rlArr) {

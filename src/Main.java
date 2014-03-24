@@ -27,7 +27,7 @@ public class Main {
         StdOut.println("Merge repeats...");
         In input = new In(params.repeatFile);
         Out output = new Out("~merge_" + params.repeatFile);
-        MergeFilter mergeFilter = new MergeFilter(input, output, params.mergeThreshold);
+        MergeFilter mergeFilter = new MergeFilter(input, output, params.merge, params.mergeThreshold);
         input.close();
         output.close();
 
@@ -35,6 +35,7 @@ public class Main {
         ArrayList<RepeatLine> filteredRepeats = RepeatFilter.filter(mergeFilter.rlArr);
         RepeatLine[] rlArr =  new RepeatLine[filteredRepeats.size()];
         filteredRepeats.toArray(rlArr);
+        StdOut.println("Total repeats: " + rlArr.length);
 
         StdOut.println("Read sequence...");
         SequenceFactory sequenceFactory = new SequenceFactory();

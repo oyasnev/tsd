@@ -14,6 +14,7 @@ import tsd.TSDFile;
 import tsd.TSDFind;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Main {
 
@@ -26,13 +27,13 @@ public class Main {
 
         StdOut.println("Merge repeats...");
         In input = new In(params.repeatFile);
-        Out output = new Out("~merge_" + params.repeatFile);
+        Out output = new Out("~merge_repeats.out");
         MergeFilter mergeFilter = new MergeFilter(input, output, params.merge, params.mergeThreshold);
         input.close();
         output.close();
 
         // filter
-        ArrayList<RepeatLine> filteredRepeats = RepeatFilter.filter(mergeFilter.rlArr);
+        ArrayList<RepeatLine> filteredRepeats = RepeatFilter.filter(mergeFilter.rlArr, params.repeatLength);
         RepeatLine[] rlArr =  new RepeatLine[filteredRepeats.size()];
         filteredRepeats.toArray(rlArr);
         StdOut.println("Total repeats: " + rlArr.length);
@@ -42,7 +43,7 @@ public class Main {
         ArrayList<Sequence> arList = (ArrayList<Sequence>) Fasta.readSequences(params.inputSeqFile, sequenceFactory);
 
         StdOut.println("Find TSD...");
-        TSDFind tsdFind = new TSDFind(rlArr, arList.get(0), params.tsdLength, params.tsdEditDistance);
+        TSDFind tsdFind = new TSDFind(rlArr, arList.get(0), params.tsdLength, params.tsdEditDistance, params.maxDistFromRepeat);
         StdOut.println("TSD found: " + tsdFind.getTSDList().size());
 
         StdOut.println("Write TSD to file...");

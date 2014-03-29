@@ -23,10 +23,11 @@ public class MergeFilter {
         if (merge) {
             // read first repeat
             RepeatLine rl = new RepeatLine(RepeatMaskerLine.read(input));
+            String rClass = rl.repeatClass;
             // continue
             RepeatMaskerLine rml = RepeatMaskerLine.read(input);
             while (rml != null) {
-                if (rml.posQBegin - rl.posQEnd <= merge_threshold) {
+                if (rml.posQBegin - rl.posQEnd <= merge_threshold /*&& (rml.repeatClass.equals(rClass))*/) {
                     // merge repeats
                     rl.posQEnd = Math.max(rl.posQEnd, rml.posQEnd);
                     rl.repeatName += '|' + rml.repeatName;
@@ -34,8 +35,9 @@ public class MergeFilter {
                 } else {
                     rlArr.add(rl);
                     rl = new RepeatLine(rml);
+                    rClass = rl.repeatClass;
                }
-                rml = RepeatMaskerLine.read(input);
+               rml = RepeatMaskerLine.read(input);
             }
             rlArr.add(rl);
         } else {

@@ -18,12 +18,14 @@ public class TSDFind {
     protected ArrayList<TSD> tsdArr;
     protected int lenThreshold;
     protected int distThreshold;
+    protected int maxDistFromRepeat;
 
-    public TSDFind(RepeatLine[] rlArr, ISequence sequence, int lenThreshold, int distThreshold) {
+    public TSDFind(RepeatLine[] rlArr, ISequence sequence, int lenThreshold, int distThreshold, int maxDistFromRepeat) {
         this.rlArr = rlArr;
         this.sequence = sequence;
         this.lenThreshold = lenThreshold;
         this.distThreshold = distThreshold;
+        this.maxDistFromRepeat = maxDistFromRepeat;
         findAll();
     }
 
@@ -35,7 +37,7 @@ public class TSDFind {
         String seq = sequence.getSequence();
         tsdArr = new ArrayList<TSD>();
         for (RepeatLine repeat : rlArr) {
-            int dist = 15;
+            int dist = maxDistFromRepeat;
             int startFirst = Math.max(0, repeat.posQBegin - dist - 1);
             int endFirst = Math.min(seq.length(), repeat.posQBegin + dist - 1);
             String strStart = seq.substring(startFirst, endFirst);

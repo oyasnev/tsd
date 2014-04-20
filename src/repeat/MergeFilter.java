@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * Date: 11.03.14
  */
 public class MergeFilter {
-    public ArrayList<RepeatLine> rlArr;
+    public ArrayList<Repeat> rlArr;
 
     public MergeFilter(In input, Out output, boolean merge, int merge_threshold) {
         // skip header lines
@@ -19,23 +19,23 @@ public class MergeFilter {
         }
 
         // read repeats
-        rlArr = new ArrayList<RepeatLine>();
+        rlArr = new ArrayList<Repeat>();
         if (merge) {
             // read first repeat
-            RepeatLine rl = new RepeatLine(RepeatMaskerLine.read(input));
-            String rClass = rl.repeatClass;
+            Repeat rl = new Repeat(RepeatMaskerLine.read(input));
+            String rClass = rl.cls;
             // continue
             RepeatMaskerLine rml = RepeatMaskerLine.read(input);
             while (rml != null) {
-                if (rml.posQBegin - rl.posQEnd <= merge_threshold /*&& (rml.repeatClass.equals(rClass))*/) {
+                if (rml.posQBegin - rl.posQEnd <= merge_threshold /*&& (rml.cls.equals(rClass))*/) {
                     // merge repeats
                     rl.posQEnd = Math.max(rl.posQEnd, rml.posQEnd);
-                    rl.repeatName += '|' + rml.repeatName;
-                    rl.repeatClass += '|' + rml.repeatClass;
+                    rl.name += '|' + rml.repeatName;
+                    rl.cls += '|' + rml.repeatClass;
                 } else {
                     rlArr.add(rl);
-                    rl = new RepeatLine(rml);
-                    rClass = rl.repeatClass;
+                    rl = new Repeat(rml);
+                    rClass = rl.cls;
                }
                rml = RepeatMaskerLine.read(input);
             }
@@ -44,13 +44,13 @@ public class MergeFilter {
             // not merge
             RepeatMaskerLine rml = RepeatMaskerLine.read(input);
             while (rml != null) {
-                rlArr.add(new RepeatLine(rml));
+                rlArr.add(new Repeat(rml));
                 rml = RepeatMaskerLine.read(input);
             }
         }
 
         // write to output
-        for (RepeatLine repeat : rlArr) {
+        for (Repeat repeat : rlArr) {
             repeat.write(output);
         }
     }

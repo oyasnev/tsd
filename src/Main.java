@@ -1,20 +1,16 @@
-import alignment.AlignStartPos;
-import alignment.LocalAlignment;
 import common.Sequence;
 import common.SequenceFactory;
 import edu.princeton.cs.introcs.In;
 import edu.princeton.cs.introcs.Out;
 import edu.princeton.cs.introcs.StdOut;
 import repeat.MergeFilter;
+import repeat.Repeat;
 import repeat.RepeatFilter;
-import repeat.RepeatLine;
 import tools.Fasta;
-import tsd.TSD;
 import tsd.TSDFile;
 import tsd.TSDFind;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Main {
 
@@ -27,14 +23,14 @@ public class Main {
 
         StdOut.println("Merge repeats...");
         In input = new In(params.repeatFile);
-        Out output = new Out("~merge_repeats.out");
+        Out output = new Out("~" + params.inputSeqFilename + "_merge_repeats.out");
         MergeFilter mergeFilter = new MergeFilter(input, output, params.merge, params.mergeThreshold);
         input.close();
         output.close();
 
         // filter
-        ArrayList<RepeatLine> filteredRepeats = RepeatFilter.filter(mergeFilter.rlArr, params.repeatLength);
-        RepeatLine[] rlArr =  new RepeatLine[filteredRepeats.size()];
+        ArrayList<Repeat> filteredRepeats = RepeatFilter.filter(mergeFilter.rlArr, params.repeatLength);
+        Repeat[] rlArr =  new Repeat[filteredRepeats.size()];
         filteredRepeats.toArray(rlArr);
         StdOut.println("Total repeats: " + rlArr.length);
 
@@ -43,12 +39,15 @@ public class Main {
         ArrayList<Sequence> arList = (ArrayList<Sequence>) Fasta.readSequences(params.inputSeqFile, sequenceFactory);
 
         StdOut.println("Find TSD...");
-        TSDFind tsdFind = new TSDFind(rlArr, arList.get(0), params.tsdLength, params.tsdEditDistance, params.maxDistFromRepeat);
-        StdOut.println("TSD found: " + tsdFind.getTSDList().size());
+        TSDFind tsdFind = new TSDFind(rlArr, arList.get(0), params.tsdLength, params.tsdEditDistance, params.distOutRepeat, params.distInsideRepeat);
+        StdOut.println("TSD found: " + tsdFind.tsdCount);
 
         StdOut.println("Write TSD to file...");
-        output = new Out(params.outputFile);
-        TSDFile.write(tsdFind.getTSDList(), output);
+        output = new Out(params.outputFile + "_alignment.txt");
+        TSDFile.writeAlignment(tsdFind.getTSDList(), output);
+        output.close();
+        output = new Out(params.outputFile + ".csv");
+        TSDFile.writeCSV(tsdFind.getTSDList(), output);
         output.close();
     }
 

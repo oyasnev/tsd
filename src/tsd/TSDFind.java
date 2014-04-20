@@ -3,8 +3,7 @@ package tsd;
 import alignment.AlignStartPos;
 import alignment.LocalAlignment;
 import common.interfaces.ISequence;
-import edu.princeton.cs.introcs.StdOut;
-import repeat.RepeatLine;
+import repeat.Repeat;
 
 import java.util.ArrayList;
 
@@ -13,19 +12,22 @@ import java.util.ArrayList;
  * Date: 12.03.14
  */
 public class TSDFind {
-    protected RepeatLine[] rlArr;
+    public int tsdCount;
+    protected Repeat[] rlArr;
     protected ISequence sequence;
     protected ArrayList<TSD> tsdArr;
     protected int lenThreshold;
     protected int distThreshold;
-    protected int maxDistFromRepeat;
+    protected int distOutRepeat;
+    protected int distInsideRepeat;
 
-    public TSDFind(RepeatLine[] rlArr, ISequence sequence, int lenThreshold, int distThreshold, int maxDistFromRepeat) {
-        this.rlArr = rlArr;
-        this.sequence = sequence;
-        this.lenThreshold = lenThreshold;
-        this.distThreshold = distThreshold;
-        this.maxDistFromRepeat = maxDistFromRepeat;
+    public TSDFind(Repeat[] rlArr, ISequence sequence, int lenThreshold, int distThreshold, int distOutRepeat, int distInsideRepeat) {
+        this.rlArr            = rlArr;
+        this.sequence         = sequence;
+        this.lenThreshold     = lenThreshold;
+        this.distThreshold    = distThreshold;
+        this.distOutRepeat    = distOutRepeat;
+        this.distInsideRepeat = distInsideRepeat;
         findAll();
     }
 
@@ -36,24 +38,27 @@ public class TSDFind {
     protected void findAll() {
         String seq = sequence.getSequence();
         tsdArr = new ArrayList<TSD>();
-        for (RepeatLine repeat : rlArr) {
-            int dist = maxDistFromRepeat;
-            int startFirst = Math.max(0, repeat.posQBegin - dist - 1);
-            int endFirst = Math.min(seq.length(), repeat.posQBegin + dist - 1);
+        tsdCount = 0;
+        for (Repeat repeat : rlArr) {
+            int startFirst = Math.max(0, repeat.posQBegin - distOutRepeat - 1);
+            int endFirst = Math.min(seq.length(), repeat.posQBegin + distInsideRepeat - 1);
             String strStart = seq.substring(startFirst, endFirst);
-            int startSecond = Math.max(0, repeat.posQEnd - dist - 1);
-            int endSecond = Math.min(seq.length(), repeat.posQEnd + dist);
+            int startSecond = Math.max(0, repeat.posQEnd - distInsideRepeat - 1);
+            int endSecond = Math.min(seq.length(), repeat.posQEnd + distOutRepeat);
             String strEnd = seq.substring(startSecond, endSecond);
 
             // find tsd
             TSD tsd = findTSD(strStart, strEnd);
             if (tsd != null) {
-                tsd.repeatName = repeat.repeatName;
-                tsd.repeatClass = repeat.repeatClass;
+                tsd.hasTSD = true;
+                tsdCount++;
                 tsd.startPos += startFirst;
                 tsd.endPos += startSecond;
-                tsdArr.add(tsd);
+            } else {
+                tsd = new TSD();
             }
+            tsd.repeat = repeat;
+            tsdArr.add(tsd);
         }
     }
 

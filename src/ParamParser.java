@@ -1,5 +1,7 @@
 import edu.princeton.cs.introcs.In;
 import edu.princeton.cs.introcs.StdOut;
+import org.apache.commons.io.FilenameUtils;
+
 
 /**
  * Author: Oleg Yasnev (oyasnev@gmail.com)
@@ -15,21 +17,24 @@ public class ParamParser {
     public static final String TSD_LENGTH_KEY           = "-tl";
     public static final String TSD_EDIT_DISTANCE_KEY    = "-ted";
     public static final String REPEAT_LENGTH_KEY        = "-rl";
-    public static final String MAX_DIST_FROM_REPEAT_KEY = "-dfr";
+    public static final String DIST_OUT_REPEAT_KEY      = "-dor";
+    public static final String DIST_INSIDE_REPEAT_KEY   = "-dir";
 
     public static final String README = "readme.txt";
 
     public boolean state = false;
 
     public String  inputSeqFile      = "";
+    public String  inputSeqFilename  = "";
     public String  repeatFile        = "";
-    public String  outputFile        = "tsd.txt";
+    public String  outputFile        = "tsd";
     public boolean merge             = false;
     public int     mergeThreshold    = 20;
     public int     tsdLength         = 7;
     public int     tsdEditDistance   = 3;
     public int     repeatLength      = 1000;
-    public int     maxDistFromRepeat = 200;
+    public int     distOutRepeat     = 200;
+    public int     distInsideRepeat  = 0;
 
     public ParamParser(String[] args) {
         if (args.length == 0 || args[0].equals("--help") || args[0].equals("?") || args[0].equals("-h")) {
@@ -42,6 +47,7 @@ public class ParamParser {
             if      (key.equals(INPUT_FILE_KEY)) {
                 i++;
                 inputSeqFile = args[i];
+                inputSeqFilename = FilenameUtils.getBaseName(inputSeqFile);
             }
             else if (key.equals(OUTPUT_FILE_KEY)) {
                 i++;
@@ -69,9 +75,12 @@ public class ParamParser {
             else if (key.equals(REPEAT_LENGTH_KEY)) {
                 i++;
                 repeatLength = Integer.parseInt(args[i]);
-            } else if (key.equals(MAX_DIST_FROM_REPEAT_KEY)) {
+            } else if (key.equals(DIST_OUT_REPEAT_KEY)) {
                 i++;
-                maxDistFromRepeat = Integer.parseInt(args[i]);
+                distOutRepeat = Integer.parseInt(args[i]);
+            } else if (key.equals(DIST_INSIDE_REPEAT_KEY)) {
+                i++;
+                distInsideRepeat = Integer.parseInt(args[i]);
             }
         }
 
@@ -104,10 +113,6 @@ public class ParamParser {
         if (repeatLength <= 0) {
             state = false;
             StdOut.println("Repeat minimum length must be > 0");
-        }
-        if (maxDistFromRepeat < 0) {
-            state = false;
-            StdOut.println("Max distance of TSD from repeat must be >= 0");
         }
 
         if (!state) {

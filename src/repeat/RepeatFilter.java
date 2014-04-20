@@ -7,16 +7,16 @@ import java.util.ArrayList;
  * Date: 16.03.14
  */
 public class RepeatFilter {
-    public static ArrayList<RepeatLine> filter(ArrayList<RepeatLine> sourceList, int repeatLength) {
-        ArrayList<RepeatLine> resList = new ArrayList<RepeatLine>();
-        for (RepeatLine repeat : sourceList) {
-            /*String cls = repeat.repeatClass;
+    public static ArrayList<Repeat> filter(ArrayList<Repeat> sourceList, int repeatLength) {
+        ArrayList<Repeat> resList = new ArrayList<Repeat>();
+        for (Repeat repeat : sourceList) {
+            /*String cls = repeat.cls;
             if (cls.contains("LINE") || cls.contains("LTR") || cls.contains("RC") || cls.contains("DNA")
                     || cls.contains("SINE") || cls.contains("Alu")) {
                 resList.add(repeat);
             } */
-            String cls = repeat.repeatName;
-            if (cls.contains("L1HS") && (repeat.posQEnd - repeat.posQBegin >= repeatLength)) {
+            String cls = repeat.cls;
+            if (cls.contains("L1") && (repeat.posQEnd - repeat.posQBegin >= repeatLength)) {
                 resList.add(repeat);
             }
         }

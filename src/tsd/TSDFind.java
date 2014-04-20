@@ -40,9 +40,7 @@ public class TSDFind {
         String seq = sequence.getSequence();
         tsdArr = new ArrayList<TSD>();
         tsdCount = 0;
-        int counter = 0;
         for (Repeat repeat : rlArr) {
-            counter++;
             int startFirst = Math.max(0, repeat.posQBegin - distOutRepeat - 1);
             int endFirst = Math.min(seq.length(), repeat.posQBegin + distInsideRepeat - 1);
             String strStart = seq.substring(startFirst, endFirst);
@@ -80,7 +78,7 @@ public class TSDFind {
         int m = strFirst.length();
         int n = strSecond.length();
 
-        for (int i = 1; i < m; i++) {
+        for (int i = m - 1; i > 0; i--) {
             for (int j = 1; j < n; j++) {
                 int score = matrix[i][j];
                 int dist = distMatrix[i][j];

@@ -30,6 +30,6 @@ public class TSD {
     }
 
     public int getHeuristicScore() {
-        return score - (dist + 1) * (dist + 1);
+        return score - (dist + 1) * (dist + 1) ;
     }
 }

@@ -133,7 +133,7 @@ public class LocalAlignment {
             }
             StdOut.println();
         }
-        StdOut.println();*/
+        StdOut.println(); */
     }
 
     public String[] backtracking(int i, int j) {

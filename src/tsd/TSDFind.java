@@ -3,6 +3,7 @@ package tsd;
 import alignment.AlignStartPos;
 import alignment.LocalAlignment;
 import common.interfaces.ISequence;
+import edu.princeton.cs.introcs.StdOut;
 import repeat.Repeat;
 
 import java.util.ArrayList;
@@ -39,26 +40,33 @@ public class TSDFind {
         String seq = sequence.getSequence();
         tsdArr = new ArrayList<TSD>();
         tsdCount = 0;
+        int counter = 0;
         for (Repeat repeat : rlArr) {
+            counter++;
             int startFirst = Math.max(0, repeat.posQBegin - distOutRepeat - 1);
             int endFirst = Math.min(seq.length(), repeat.posQBegin + distInsideRepeat - 1);
             String strStart = seq.substring(startFirst, endFirst);
-            int startSecond = Math.max(0, repeat.posQEnd - distInsideRepeat - 1);
+            int startSecond = Math.max(0, repeat.posQEnd - distInsideRepeat);
             int endSecond = Math.min(seq.length(), repeat.posQEnd + distOutRepeat);
             String strEnd = seq.substring(startSecond, endSecond);
+
+           // StdOut.printf("Repeat test %d\n", counter);
 
             // find tsd
             TSD tsd = findTSD(strStart, strEnd);
             if (tsd != null) {
                 tsd.hasTSD = true;
                 tsdCount++;
+                //StdOut.printf("\nTSD startPos: %d, endPos: %d\n\n", tsd.startPos, tsd.endPos);
                 tsd.startPos += startFirst;
                 tsd.endPos += startSecond;
             } else {
                 tsd = new TSD();
+                //StdOut.printf("\nno TSD found\n\n");
             }
             tsd.repeat = repeat;
             tsdArr.add(tsd);
+            //if (tsdArr.size() > 20) return;
         }
     }
 
@@ -80,8 +88,8 @@ public class TSDFind {
                 if (checkTSD(i, j, start, dist)) {
                     String[] alignedStrs = alignment.backtracking(i, j);
                     TSD tsd = new TSD(strFirst.substring(start.i, i), strSecond.substring(start.j, j), score, dist);
-                    tsd.startPos = start.i;
-                    tsd.endPos = start.j;
+                    tsd.startPos = start.i + 1;
+                    tsd.endPos = start.j + 1;
                     tsd.alignedStart = alignedStrs[0];
                     tsd.alignedEnd = alignedStrs[1];
                     if (bestTsd == null && tsd.getHeuristicScore() > 0

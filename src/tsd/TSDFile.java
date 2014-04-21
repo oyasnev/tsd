@@ -33,7 +33,7 @@ public class TSDFile {
                     ,tsd.repeat.name
                     ,tsd.repeat.posQBegin
                     ,tsd.repeat.posQEnd
-                    ,tsd.repeat.complement
+                    ,tsd.repeat.complement ? "C" : "+"
                     ,(tsd.hasTSD ? 1 : 0)
             );
             if (tsd.hasTSD) {

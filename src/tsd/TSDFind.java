@@ -2,6 +2,7 @@ package tsd;
 
 import alignment.AlignStartPos;
 import alignment.LocalAlignment;
+import common.Sequence;
 import common.interfaces.ISequence;
 import edu.princeton.cs.introcs.StdOut;
 import repeat.Repeat;
@@ -48,23 +49,22 @@ public class TSDFind {
             int endSecond = Math.min(seq.length(), repeat.posQEnd + distOutRepeat);
             String strEnd = seq.substring(startSecond, endSecond);
 
-           // StdOut.printf("Repeat test %d\n", counter);
-
             // find tsd
             TSD tsd = findTSD(strStart, strEnd);
             if (tsd != null) {
                 tsd.hasTSD = true;
                 tsdCount++;
-                //StdOut.printf("\nTSD startPos: %d, endPos: %d\n\n", tsd.startPos, tsd.endPos);
                 tsd.startPos += startFirst;
                 tsd.endPos += startSecond;
+                if (repeat.complement) {
+                    tsd.start = Sequence.getReverseComplement(tsd.start);
+                    tsd.end = Sequence.getReverseComplement(tsd.end);
+                }
             } else {
                 tsd = new TSD();
-                //StdOut.printf("\nno TSD found\n\n");
             }
             tsd.repeat = repeat;
             tsdArr.add(tsd);
-            //if (tsdArr.size() > 20) return;
         }
     }
 

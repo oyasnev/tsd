@@ -7,12 +7,12 @@ import edu.princeton.cs.introcs.Out;
  * Date: 11.03.14
  */
 public class Repeat {
-    public String querySeq;
-    public int    posQBegin;
-    public int    posQEnd;
-    public String name;
-    public String cls;
-    public String complement;
+    public String  querySeq;
+    public int     posQBegin;
+    public int     posQEnd;
+    public String  name;
+    public String  cls;
+    public Boolean complement;
 
     public Repeat() {
 

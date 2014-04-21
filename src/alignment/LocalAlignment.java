@@ -13,7 +13,7 @@ enum Direction {
  * Date: 12.03.14
  */
 public class LocalAlignment {
-    public static char GAP = '_';
+    public static char GAP = '-';
 
     protected char[] first;
     protected char[] second;

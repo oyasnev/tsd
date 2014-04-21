@@ -23,19 +23,19 @@ public class MergeFilter {
         if (merge) {
             // read first repeat
             Repeat rl = new Repeat(RepeatMaskerLine.read(input));
-            String rClass = rl.cls;
+            String rName = rl.name;
             // continue
             RepeatMaskerLine rml = RepeatMaskerLine.read(input);
             while (rml != null) {
-                if (rml.posQBegin - rl.posQEnd <= merge_threshold /*&& (rml.cls.equals(rClass))*/) {
+                if (rml.posQBegin - rl.posQEnd <= merge_threshold && (rml.repeatName.equals(rName))) {
                     // merge repeats
                     rl.posQEnd = Math.max(rl.posQEnd, rml.posQEnd);
-                    rl.name += '|' + rml.repeatName;
-                    rl.cls += '|' + rml.repeatClass;
+                    //rl.name += '|' + rml.repeatName;
+                    //rl.cls += '|' + rml.repeatClass;
                 } else {
                     rlArr.add(rl);
                     rl = new Repeat(rml);
-                    rClass = rl.cls;
+                    rName = rl.name;
                }
                rml = RepeatMaskerLine.read(input);
             }

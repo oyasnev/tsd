@@ -7,7 +7,7 @@ import repeat.Repeat;
  * Date: 16.03.14
  */
 public class TSD {
-    public Repeat  repeat;
+    public Repeat repeat;
     public boolean hasTSD = false;
     public int     startPos;
     public int     endPos;
@@ -27,6 +27,14 @@ public class TSD {
         this.end   = end;
         this.score = score;
         this.dist  = dist;
+    }
+
+    public int length() {
+        if (alignedStart != null) {
+            return alignedStart.length();
+        } else {
+            return 0;
+        }
     }
 
     public int getHeuristicScore() {

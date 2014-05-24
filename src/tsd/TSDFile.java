@@ -1,7 +1,8 @@
 package tsd;
 
+import edu.princeton.cs.introcs.In;
 import edu.princeton.cs.introcs.Out;
-import edu.princeton.cs.introcs.StdOut;
+import repeat.Repeat;
 
 import java.util.ArrayList;
 
@@ -19,7 +20,7 @@ public class TSDFile {
                 out.printf("Repeat name: %s \n", tsd.repeat.name);
                 out.printf("Repeat class: %s \n", tsd.repeat.cls);
                 out.printf("First TSD pos: %d, second TSD pos: %d\n", tsd.startPos + 1, tsd.endPos + 1);
-                out.printf("length: %d, SW score: %d, edit distance: %d\n", tsd.alignedStart.length(), tsd.score, tsd.dist);
+                out.printf("length: %d, SW score: %d, edit distance: %d\n", tsd.length(), tsd.score, tsd.dist);
                 out.println("\n");
             }
         }
@@ -42,11 +43,39 @@ public class TSDFile {
                         ,tsd.startPos
                         ,tsd.alignedEnd
                         ,tsd.endPos
-                        ,tsd.alignedStart.length()
+                        ,tsd.length()
                         ,tsd.dist
                 );
             }
             out.println();
         }
+    }
+
+    public static ArrayList<TSD> readCSV(In in) {
+        ArrayList<TSD> tsdList = new ArrayList<TSD>();
+        while (in.hasNextLine()) {
+            String s = in.readLine();
+            String[] sArr = s.split(";");
+            Repeat repeat = new Repeat();
+            repeat.querySeq = sArr[0];
+            repeat.cls = sArr[1];
+            repeat.name = sArr[2];
+            repeat.posQBegin = Integer.parseInt(sArr[3]);
+            repeat.posQEnd = Integer.parseInt(sArr[4]);
+            repeat.complement = sArr[5].equals("C");
+            TSD tsd = new TSD();
+            tsd.repeat = repeat;
+            tsd.hasTSD = sArr[6].equals("1");
+            if (tsd.hasTSD) {
+                tsd.alignedStart = sArr[7];
+                tsd.startPos = Integer.parseInt(sArr[8]);
+                tsd.alignedEnd = sArr[9];
+                tsd.endPos = Integer.parseInt(sArr[10]);
+                // skip sArr[11], the length as it is accessible in TSD as method
+                tsd.dist = Integer.parseInt(sArr[12]);
+            }
+            tsdList.add(tsd);
+        }
+        return tsdList;
     }
 }

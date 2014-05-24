@@ -20,7 +20,8 @@ public class ParamParser {
     public static final String DIST_OUT_REPEAT_KEY      = "-dor";
     public static final String DIST_INSIDE_REPEAT_KEY   = "-dir";
 
-    public static final String README = "readme.txt";
+    public static final String README  = "README.txt";
+    public static final String VERSION = "VERSION";
 
     public boolean state = false;
 
@@ -39,6 +40,9 @@ public class ParamParser {
     public ParamParser(String[] args) {
         if (args.length == 0 || args[0].equals("--help") || args[0].equals("?") || args[0].equals("-h")) {
             printHelp();
+            return;
+        } else if (args[0].equals("-v") || args[0].equals("--version")) {
+            printVersion();
             return;
         }
 
@@ -122,6 +126,13 @@ public class ParamParser {
 
     public static void printHelp() {
         In in = new In(README);
+        while (!in.isEmpty()) {
+            StdOut.println(in.readLine());
+        }
+    }
+
+    public static void printVersion() {
+        In in = new In(VERSION);
         while (!in.isEmpty()) {
             StdOut.println(in.readLine());
         }

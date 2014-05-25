@@ -23,10 +23,11 @@ public class Main {
 
         StdOut.println("Merge repeats...");
         In input = new In(params.repeatFile);
-        Out output = new Out("~" + params.inputSeqFilename + "_merge_repeats.out");
-        MergeFilter mergeFilter = new MergeFilter(input, output, params.merge, params.mergeThreshold);
+        //Out output = new Out("~" + params.inputSeqFilename + "_merge_repeats.out");
+        MergeFilter mergeFilter = new MergeFilter(input, params.merge, params.mergeThreshold);
         input.close();
-        output.close();
+        //output.close();
+
 
         // filter
         ArrayList<Repeat> filteredRepeats = RepeatFilter.filter(mergeFilter.rlArr, params.repeatLength);
@@ -43,7 +44,7 @@ public class Main {
         StdOut.println("TSD found: " + tsdFind.tsdCount);
 
         StdOut.println("Write TSD to file...");
-        output = new Out(params.outputFile + "_alignment.txt");
+        Out output = new Out(params.outputFile + "_alignment.txt");
         TSDFile.writeAlignment(tsdFind.getTSDList(), output);
         output.close();
         output = new Out(params.outputFile + ".csv");

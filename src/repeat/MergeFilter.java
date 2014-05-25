@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class MergeFilter {
     public ArrayList<Repeat> rlArr;
 
-    public MergeFilter(In input, Out output, boolean merge, int merge_threshold) {
+    public MergeFilter(In input, boolean merge, int merge_threshold) {
         // skip header lines
         for (int i = 0; i < 3; i++) {
             input.readLine();
@@ -48,8 +48,9 @@ public class MergeFilter {
                 rml = RepeatMaskerLine.read(input);
             }
         }
+    }
 
-        // write to output
+    public void writeToFile(Out output) {
         for (Repeat repeat : rlArr) {
             repeat.write(output);
         }

@@ -28,7 +28,7 @@ public class ParamParser {
     public String  inputSeqFile      = "";
     public String  inputSeqFilename  = "";
     public String  repeatFile        = "";
-    public String  outputFile        = "tsd";
+    public String  outputFile        = "";
     public boolean merge             = false;
     public int     mergeThreshold    = 20;
     public int     tsdLength         = 7;
@@ -103,8 +103,7 @@ public class ParamParser {
             verifyInputRepeatFile();
         }
         if (outputFile.isEmpty()) {
-            state = false;
-            System.err.println("ERROR: Output file must be specified");
+            outputFile = inputSeqFilename + "_tsd";
         }
         if (mergeThreshold < 0) {
             state = false;

@@ -11,6 +11,7 @@ import tsd.TSDFile;
 import tsd.TSDFind;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Main {
 
@@ -21,13 +22,15 @@ public class Main {
             return;
         }
 
+        Date startDate = new Date();
+        StdOut.printf("Processing started: %s\n", startDate);
+
         StdOut.println("Merge repeats...");
         In input = new In(params.repeatFile);
         //Out output = new Out("~" + params.inputSeqFilename + "_merge_repeats.out");
         MergeFilter mergeFilter = new MergeFilter(input, params.merge, params.mergeThreshold);
         input.close();
         //output.close();
-
 
         // filter
         ArrayList<Repeat> filteredRepeats = RepeatFilter.filter(mergeFilter.rlArr, params.repeatLength);
@@ -50,9 +53,10 @@ public class Main {
         output = new Out(params.outputFile + ".csv");
         TSDFile.writeCSV(tsdFind.getTSDList(), output);
         output.close();
+
+        Date endDate = new Date();
+        StdOut.printf("Processing finished: %s\n", endDate);
+        long diff = endDate.getTime() - startDate.getTime();
+        StdOut.printf("Time elapsed: %d min %d sec\n", diff / (60 * 1000) % 60, diff / 1000 % 60);
     }
-
-
-
-
 }

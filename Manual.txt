@@ -1,0 +1,110 @@
+--------------------------
+DESCRIPTION
+--------------------------
+The tool finds TSD (target site duplication) of retrotransposons, if any.
+The tool accepts a FASTA file with a sequence and a RepeatMasker output file.
+The tool outputs for every repeat whether it has TSD and, if yes, info about TSD.
+
+--------------------------
+REQUIREMENTS
+--------------------------
+Java JRE 1.7 or higher
+
+-------------------------
+QUICK START
+-------------------------
+./run.sh -i chr21.fa -r chr21.fa.out
+
+-------------------------
+PACKAGING
+-------------------------
+After unzipping the package you should have following files:
+    chr21.fa        - test FASTA file with 21-th chromosome taken from human reference
+    chr21.fa.out    - test RepeatMasker output file
+    Manual.txt      - this manual
+    README.txt      - quick reference
+    run.sh          - script for easy running the tool
+    TSD.jar         - JAR program file
+    VERSION         - version info
+
+-------------------------
+USAGE
+-------------------------
+1. You should have a sequence in FASTA format.
+2. You should run RepeatMasker applied to the sequence from point 1. Do not forget to specify a specimen.
+For more details about RepeatMasker go here: http://www.repeatmasker.org/
+3. Run this tool.
+There are several ways to run the TSD tool, you may use whichever you like:
+    ./run.sh
+    bash run.sh
+    java -jar TSD.jar
+
+All of parameteres and keys described below. You may look at a simple usage example in "Quick start" section.
+
+INPUT:
+Sequence file in FASTA format and RepeatMasker output file
+
+OUTPUT:
+Two files are produced.
+1. Has suffix "_tsd.csv". For every repeat from RepeatMasker output files it contains info
+whether a repeat has TSD and, if yes, info about TSD.
+Format specification described here: https://github.com/oyasnev/tsddoc
+2. Has suffix "_tsd_alignment.txt". Contains alignment info about every found TSD.
+Format description and example:
+- Line 1: TTTATAT
+- Line 2: TTTATAT
+Alignment of two found TSDs.
+- Line 3: Sequence: chr21
+Sequence name.
+- Line 4: Repeat name: HAL1
+Name of the repeat which has got found TSDs.
+- Line 5: Repeat class: LINE/L1
+Classname of the repeat.
+- Line 6: First TSD pos: 9416129, second TSD pos: 9417349
+Positions of the first and the second TSDs in the sequence.
+- Line 7: length: 7, SW score: 7, edit distance: 0
+Length of aligned TSD, score value of Smith-Waterman alignment, edit distance of aligned TSDs.
+
+
+-------------------------
+PARAMETERS AND KEYS DESCRIPTION
+-------------------------
+REQUIRED:
+1. "-i" - input sequence file in FASTA format.
+Example: -i chr21.fa
+2. "-r" - input RepeatMasker output file.
+Example: -r chr21.fa.out
+
+OPTIONAL:
+1. "-o" - output files prefix. Default: filename of input sequence file.
+Example: "-o out" - this will produce files "out_tsd.csv" and "out_tsd_alignment.txt"
+2. "-m" - turn on repeat merging. If this key is given, then repeats which look to be parts of
+a single repeat will be merged together. Default: turn off.
+Example: -m
+3. "-mt" - merge threshold. Works only if the key "-m" is given. Is a maximum distance between two repeats at which
+they still can be merged. Default: 20
+Example: -mt 30
+4. "-tl" - minimum length of TSD. Default: 7
+Example: -tl 10
+5. "-ted" - maximum edit distance of TSD. Default: 3
+Example: -ted 2
+6. "-rl" - minimum length of repeat (smaller repeat will be ignore). Default: 1000
+Example: -rl 500
+7. "-dor" - maximum distance of TSD outside of the repeat boundary. Default: 200
+Example: -dor 100
+8. "-dir" - maximum distance of TSD inside of the repeat boundary. Defaut: 0
+Example: -dir 10
+
+
+-------------------------
+LIBRARIES
+-------------------------
+commons-io-2.1                  http://archive.apache.org/dist/commons/io/binaries/commons-io-2.1-bin.zip
+stdlib-package                  http://introcs.cs.princeton.edu/java/stdlib/stdlib-package.jar
+
+
+-------------------------
+FEEDBACK
+-------------------------
+If you have any question, please write to Oleg Yasnev <oyasnev@gmail.com>.
+Source code: https://github.com/oyasnev/tsd

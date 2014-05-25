@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class MergeFilter {
     public ArrayList<Repeat> rlArr;
 
-    public MergeFilter(In input, boolean merge, int merge_threshold) {
+    public MergeFilter(In input, boolean merge, int mergeThreshold) {
         // skip header lines
         for (int i = 0; i < 3; i++) {
             input.readLine();
@@ -27,7 +27,7 @@ public class MergeFilter {
             // continue
             RepeatMaskerLine rml = RepeatMaskerLine.read(input);
             while (rml != null) {
-                if (rml.posQBegin - rl.posQEnd <= merge_threshold && (rml.repeatName.equals(rName))) {
+                if (rml.posQBegin - rl.posQEnd <= mergeThreshold && (rml.repeatName.equals(rName))) {
                     // merge repeats
                     rl.posQEnd = Math.max(rl.posQEnd, rml.posQEnd);
                     //rl.name += '|' + rml.repeatName;

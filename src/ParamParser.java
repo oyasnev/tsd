@@ -92,49 +92,81 @@ public class ParamParser {
         state = true;
         if (inputSeqFile.isEmpty()) {
             state = false;
-            StdOut.println("Input sequence file must be specified");
+            System.err.println("ERROR: Input sequence file must be specified");
+        } else {
+            verifyInputSeqFile();
         }
         if (repeatFile.isEmpty()) {
             state = false;
-            StdOut.println("Input repeat file must be specified");
+            System.err.println("ERROR: Input repeat file must be specified");
+        } else {
+            verifyInputRepeatFile();
         }
         if (outputFile.isEmpty()) {
             state = false;
-            StdOut.println("Output file must be specified");
+            System.err.println("ERROR: Output file must be specified");
         }
         if (mergeThreshold < 0) {
             state = false;
-            StdOut.println("Merge threshold must be >= 0");
+            System.err.println("ERROR: Merge threshold must be >= 0");
         }
         if (tsdLength <= 0) {
             state = false;
-            StdOut.println("TSD minimum length must be > 0");
+            System.err.println("ERROR: TSD minimum length must be > 0");
         }
         if (tsdEditDistance < 0) {
             state = false;
-            StdOut.println("TSD maximum edit distance must be >= 0");
+            System.err.println("ERROR: TSD maximum edit distance must be >= 0");
         }
         if (repeatLength <= 0) {
             state = false;
-            StdOut.println("Repeat minimum length must be > 0");
+            System.err.println("ERROR: Repeat minimum length must be > 0");
         }
 
         if (!state) {
-            StdOut.println("For more information run the program with the key '--help'");
+            System.err.println("For more information run the program with the key '--help'");
         }
     }
 
-    public static void printHelp() {
+    protected static void printHelp() {
         In in = new In(README);
         while (!in.isEmpty()) {
             StdOut.println(in.readLine());
         }
     }
 
-    public static void printVersion() {
+    protected static void printVersion() {
         In in = new In(VERSION);
         while (!in.isEmpty()) {
             StdOut.println(in.readLine());
+        }
+    }
+
+    protected void verifyInputSeqFile() {
+        In in = new In(inputSeqFile);
+        if (!in.exists()) {
+            state = false;
+            return;
+        }
+        in.close();
+        String ext = FilenameUtils.getExtension(inputSeqFile);
+        if (!".fasta .fna .fa".contains('.' + ext)) {
+            System.err.println("ERROR: Unsupported input sequence file extension: " + ext);
+            state = false;
+        }
+    }
+
+    protected void verifyInputRepeatFile() {
+        In in = new In(repeatFile);
+        if (!in.exists()) {
+            state = false;
+            return;
+        }
+        in.close();
+        String ext = FilenameUtils.getExtension(repeatFile);
+        if (!".out".contains('.' + ext)) {
+            System.err.println("ERROR: Unsupported input repeat file extension: " + ext);
+            state = false;
         }
     }
 }

@@ -23,9 +23,9 @@ Options:
     -m      - turn on repeat merging. If this key is given, then repeats
               which look to be parts of a single repeat will be merged together
               Default: turn off
-    -mt     - merge threshold. Works only if the key "-m" is given.
-              Is a maximum distance between two repeats at which they still
-              can be merged. Default: 20
+    -mt     - merge threshold. Is a maximum distance between two repeats
+              at which they still can be merged. Default: 20
+              You do not have to specify the key "-m", if "-mt" is given
     -tl     - minimum length of TSD. Default: 7
     -ted    - maximum edit distance of TSD. Default: 3
     -rl     - minimum length of repeat (smaller repeat will be ignore).

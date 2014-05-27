@@ -81,8 +81,9 @@ Example: "-o out" - this will produce files "out_tsd.csv" and "out_tsd_alignment
 2. "-m" - turn on repeat merging. If this key is given, then repeats which look to be parts of
 a single repeat will be merged together. Default: turn off.
 Example: -m
-3. "-mt" - merge threshold. Works only if the key "-m" is given. Is a maximum distance between two repeats at which
+3. "-mt" - merge threshold. Is a maximum distance between two repeats at which
 they still can be merged. Default: 20
+You do not have to specify the key "-m", if "-mt" is given
 Example: -mt 30
 4. "-tl" - minimum length of TSD. Default: 7
 Example: -tl 10

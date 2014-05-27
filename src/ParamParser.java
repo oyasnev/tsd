@@ -67,6 +67,7 @@ public class ParamParser {
             else if (key.equals(MERGE_THRESHOLD_KEY)) {
                 i++;
                 mergeThreshold = Integer.parseInt(args[i]);
+                merge = true;  // turn on merging automatically
             }
             else if (key.equals(TSD_LENGTH_KEY)) {
                 i++;

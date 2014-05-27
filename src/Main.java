@@ -19,7 +19,7 @@ public class Main {
     public static void main(String[] args) {
         ParamParser params = new ParamParser(args);
         if (!params.state) {
-            return;
+            System.exit(2);
         }
 
         Date startDate = new Date();

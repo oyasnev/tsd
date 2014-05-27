@@ -39,7 +39,7 @@ There are several ways to run the TSD tool, you may use whichever you like:
     bash run.sh
     java -jar TSD.jar
 
-All of parameteres and keys described below. You may look at a simple usage example in "Quick start" section.
+All of parameteres and keys are described below. You may look at a simple usage example in "Quick start" section.
 
 INPUT:
 Sequence file in FASTA format and RepeatMasker output file
@@ -95,6 +95,13 @@ Example: -rl 500
 Example: -dor 100
 8. "-dir" - maximum distance of TSD inside of the repeat boundary. Defaut: 0
 Example: -dir 10
+
+
+-------------------------
+ERROR CODES
+-------------------------
+1 - Unhandled runtime error or exception
+2 - Input parameters error
 
 
 -------------------------
